@@ -14,6 +14,35 @@ public class Movimiento : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(speed, 0, 0);
+        //transform.Translate(speed, 0, 0);
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            transform.Translate(0, speed, 0);
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+
+            transform.Translate(0, -speed, 0);
+
+
+        }
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Translate(-speed, 0, 0);
+
+        }
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+
+            transform.Translate(speed, 0, 0);
+
+
+        }
+
+        }
+
+
+
     }
-}
+
