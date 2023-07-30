@@ -5,6 +5,9 @@ using UnityEngine;
 public class Movimiento : MonoBehaviour
 {
     public float speed;
+
+    public Rigidbody2D rb2D;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +18,7 @@ public class Movimiento : MonoBehaviour
     void Update()
     {
         //transform.Translate(speed, 0, 0);
+        /*
         if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             transform.Translate(0, speed, 0);
@@ -23,9 +27,14 @@ public class Movimiento : MonoBehaviour
         {
 
             transform.Translate(0, -speed, 0);
-
+        */
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
 
         }
+
+        
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Translate(-speed, 0, 0);
@@ -37,12 +46,19 @@ public class Movimiento : MonoBehaviour
 
             transform.Translate(speed, 0, 0);
 
+        }
+
+            }
+
+            void Jump()
+{
+    Vector2 fuerza = new Vector2(0, 10f);
+    rb2D.AddForce(fuerza, ForceMode2D.Impulse);
+}
 
         }
 
-        }
 
 
-
-    }
+    
 
