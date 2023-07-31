@@ -56,6 +56,17 @@ public class Movimiento : MonoBehaviour
     rb2D.AddForce(fuerza, ForceMode2D.Impulse);
 }
 
+            void MoveRight()
+    {
+
+
+
+
+    }
+
+
+
+
         }
 
 
