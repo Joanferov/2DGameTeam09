@@ -9,8 +9,20 @@ public class Movimiento : MonoBehaviour
 
 
     public float speed;
+    public float acceleration;
+    public float maxVelocity;
+    public float friction;
+    float currentVelocity = 0f;
 
-    public Rigidbody2D rb2D;
+    Rigidbody2D rb2D;
+    Colisions colisions;
+    private void Awake()
+
+    {
+        rb2D = GetComponent<Rigidbody2D>();
+        colisions = GetComponent<Colisions>();
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -62,16 +74,76 @@ public class Movimiento : MonoBehaviour
 
     private void FixedUpdate()
     {
+        /*Vector2 forceAcceleration = new Vector2((int)currentDirection * acceleration, 0f);
+        rb2D.AddForce(forceAcceleration);
+        float velocityX = Mathf.Clamp(rb2D.velocity.x, -maxVelocity, maxVelocity);
 
-        Vector2 velocity = new Vector2((int)currentDirection*speed, rb2D.velocity.y);
+        Vector2 velocity = new Vector2(velocityX, rb2D.velocity.y);
         rb2D.velocity = velocity;
+        */
 
+
+        currentVelocity = rb2D.velocity.x;
+        if (currentDirection > 0)
+        {
+            if(currentVelocity < 0)
+            {
+                currentVelocity += (acceleration + friction) * Time.deltaTime;
+            }
+            else if(currentVelocity < maxVelocity)
+            {
+
+                currentVelocity += acceleration * Time.deltaTime;
+
+            }
+        }
+        else if (currentDirection < 0 )
+
+        {
+
+            if(currentVelocity > 0)
+            {
+                currentVelocity -= (acceleration + friction) * Time.deltaTime;
+
+            }
+            else if(currentVelocity > -maxVelocity)
+            {
+                currentVelocity -= acceleration * Time.deltaTime;
+
+            }
+             else
+            {
+
+                if(currentVelocity > 1f)
+                {
+                    currentVelocity -= friction * Time.deltaTime;
+
+                }
+                else if(currentVelocity < -1f)
+                {
+                    currentVelocity += friction * Time.deltaTime;
+
+                }
+                else
+                {
+                    currentVelocity = 0;
+                }
+            }
+            Vector2 velocity = new Vector2(currentVelocity, rb2D.velocity.y);
+            rb2D.velocity = velocity;
+                }
+ 
     }
 
             void Jump()
 {
-    Vector2 fuerza = new Vector2(0, 10f);
-    rb2D.AddForce(fuerza, ForceMode2D.Impulse);
+    if(colisions.Grounded())
+        {
+            Vector2 fuerza = new Vector2(0, 10f);
+            rb2D.AddForce(fuerza, ForceMode2D.Impulse);
+
+        }
+    
 }
 
             void MoveRight()

@@ -225,7 +225,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  rb2D: {fileID: 852444122}
+  acceleration: 10
+  maxVelocity: 8
+  friction: 14
 --- !u!50 &852444122
 Rigidbody2D:
   serializedVersion: 4
@@ -285,6 +287,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520cc79f69360c840be632afd4af5886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrounded: 0
+  groundCheck: {fileID: 1826177923}
+  groundCheckRadius: 0.25
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &986401083
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +749,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826177922}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1

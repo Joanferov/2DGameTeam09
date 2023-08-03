@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Colisions : MonoBehaviour
 {
+
+    public bool isGrounded;
+    public Transform groundCheck;
+    public float groundCheckRadius;
+    public LayerMask groundLayer;
+
+    
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -16,68 +25,26 @@ public class Colisions : MonoBehaviour
              
     
    }
-    /* private void OnCollisionEnter2D(Collision2D collision)
-     {
-         if (collision.gameObject.CompareTag("Pipe"))
-         {
-             Debug.Log("Collision Enter: " + collision.gameObject.name);
-
-         }
-         else if (collision.gameObject.CompareTag("Ground"))
-         {
-
-             Debug.Log("Empezamos a tocar el suelo");
-         }
-     }
-
-     private void OnCollisionStay2D(Collision2D collision)
-     {
-         if (collision.gameObject.tag == "Pipe")
-         {
-             Debug.Log("Collision Stay:" + collision.gameObject.name);
-
-         }
-
-     }
-
-     private void OnCollisionExit2D(Collision2D collision)
-     {
-         if (collision.gameObject.CompareTag("Pipe"))
-         {
-
-             Debug.Log("Collision Exit:" + collision.gameObject.name);
-
-
-         }
-         else if (collision.gameObject.CompareTag("Ground"))
-         {
-
-             Debug.Log("Dejamos de tocar el suelo");
-         }
-     }*/
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public bool Grounded()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
 
-            Debug.Log("Empezamos a tocar el suelo");
-        }
 
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-        {
-
-        }
-    private void OnTriggerExit2D(Collider2D collision)
-    { 
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-
-            Debug.Log("Dejamos de tocar el suelo");
-        }
-   
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        return isGrounded;
 
     }
 
-}
+
+
+
+    private void FixedUpdate()
+    {
+
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+
+    }
+
+
+} 
+    
