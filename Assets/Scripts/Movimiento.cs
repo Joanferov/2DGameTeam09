@@ -86,55 +86,55 @@ public class Movimiento : MonoBehaviour
         currentVelocity = rb2D.velocity.x;
         if (currentDirection > 0)
         {
-            if(currentVelocity < 0)
+            if (currentVelocity < 0)
             {
                 currentVelocity += (acceleration + friction) * Time.deltaTime;
             }
-            else if(currentVelocity < maxVelocity)
+            else if (currentVelocity < maxVelocity)
             {
 
                 currentVelocity += acceleration * Time.deltaTime;
 
             }
         }
-        else if (currentDirection < 0 )
+        else if (currentDirection < 0)
 
         {
 
-            if(currentVelocity > 0)
+            if (currentVelocity > 0)
             {
                 currentVelocity -= (acceleration + friction) * Time.deltaTime;
 
             }
-            else if(currentVelocity > -maxVelocity)
+            else if (currentVelocity > -maxVelocity)
             {
                 currentVelocity -= acceleration * Time.deltaTime;
 
             }
-             else
+        }
+        else
+
+        {
+
+            if (currentVelocity > 1f)
             {
+                currentVelocity -= friction * Time.deltaTime;
 
-                if(currentVelocity > 1f)
-                {
-                    currentVelocity -= friction * Time.deltaTime;
-
-                }
-                else if(currentVelocity < -1f)
-                {
-                    currentVelocity += friction * Time.deltaTime;
-
-                }
-                else
-                {
-                    currentVelocity = 0;
-                }
             }
-            Vector2 velocity = new Vector2(currentVelocity, rb2D.velocity.y);
-            rb2D.velocity = velocity;
-                }
- 
-    }
+            else if (currentVelocity < -1f)
+            {
+                currentVelocity += friction * Time.deltaTime;
 
+            }
+            else
+            {
+                currentVelocity = 0;
+            }
+        }
+        Vector2 velocity = new Vector2(currentVelocity, rb2D.velocity.y);
+        rb2D.velocity = velocity;
+
+    }
             void Jump()
 {
     if(colisions.Grounded())
