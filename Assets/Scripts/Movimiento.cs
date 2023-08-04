@@ -14,6 +14,13 @@ public class Movimiento : MonoBehaviour
     public float friction;
     float currentVelocity = 0f;
 
+
+    public float jumpForce;
+    public float maxJumpingTime = 1f;
+    bool isJumping;
+    float jumpTimer = 0;
+    float defaultGravity;
+
     Rigidbody2D rb2D;
     Colisions colisions;
     private void Awake()
@@ -27,12 +34,44 @@ public class Movimiento : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        defaultGravity = rb2D.gravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if(isJumping)
+        {
+            if(rb2D.velocity.y < 0f)
+            {
+                rb2D.gravityScale = defaultGravity;
+                if(colisions.Grounded())
+                {
+                    isJumping = false;
+                    jumpTimer = 0;
+                }
+
+            }
+            else if(rb2D.velocity.y > 0f)
+            {
+
+                if(Input.GetKey(KeyCode.Space))
+                {
+                    jumpTimer += Time.deltaTime;
+
+                }
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    if(jumpTimer < maxJumpingTime)
+                    {
+                        rb2D.gravityScale = defaultGravity * 3f;
+                    }
+
+                }
+            }
+
+        }
 
         currentDirection = Direction.None;
         //transform.Translate(speed, 0, 0);
@@ -137,9 +176,10 @@ public class Movimiento : MonoBehaviour
     }
             void Jump()
 {
-    if(colisions.Grounded())
+    if(colisions.Grounded() && !isJumping)
         {
-            Vector2 fuerza = new Vector2(0, 10f);
+            isJumping = true; 
+            Vector2 fuerza = new Vector2(0, jumpForce);
             rb2D.AddForce(fuerza, ForceMode2D.Impulse);
 
         }
