@@ -17,11 +17,12 @@ public class Movimiento : MonoBehaviour
 
     public float jumpForce;
     public float maxJumpingTime = 1f;
-    bool isJumping;
+    public bool isJumping;
     float jumpTimer = 0;
     float defaultGravity;
 
-    Rigidbody2D rb2D;
+    public bool isSkidding;
+    public Rigidbody2D rb2D;
     Colisions colisions;
     private void Awake()
 
@@ -43,7 +44,7 @@ public class Movimiento : MonoBehaviour
 
         if(isJumping)
         {
-            if(rb2D.velocity.y < 0f)
+           /* if(rb2D.velocity.y < 0f)
             {
                 rb2D.gravityScale = defaultGravity;
                 if(colisions.Grounded())
@@ -52,8 +53,8 @@ public class Movimiento : MonoBehaviour
                     jumpTimer = 0;
                 }
 
-            }
-            else if(rb2D.velocity.y > 0f)
+            }*/  
+            if(rb2D.velocity.y > 0f)
             {
 
                 if(Input.GetKey(KeyCode.Space))
@@ -70,6 +71,19 @@ public class Movimiento : MonoBehaviour
 
                 }
             }
+            else
+
+            {
+                rb2D.gravityScale = defaultGravity;
+                if (colisions.Grounded())
+                {
+                    isJumping = false;
+                    jumpTimer = 0;
+                }
+
+            }
+
+
 
         }
 
@@ -121,19 +135,20 @@ public class Movimiento : MonoBehaviour
         rb2D.velocity = velocity;
         */
 
-
+        isSkidding = false;
         currentVelocity = rb2D.velocity.x;
         if (currentDirection > 0)
         {
             if (currentVelocity < 0)
             {
                 currentVelocity += (acceleration + friction) * Time.deltaTime;
+                isSkidding = true;
             }
             else if (currentVelocity < maxVelocity)
             {
 
                 currentVelocity += acceleration * Time.deltaTime;
-
+                transform.localScale = new Vector2(1, 1);
             }
         }
         else if (currentDirection < 0)
@@ -143,12 +158,13 @@ public class Movimiento : MonoBehaviour
             if (currentVelocity > 0)
             {
                 currentVelocity -= (acceleration + friction) * Time.deltaTime;
+                isSkidding = true;
 
             }
             else if (currentVelocity > -maxVelocity)
             {
                 currentVelocity -= acceleration * Time.deltaTime;
-
+                transform.localScale = new Vector2(-1, 1);
             }
         }
         else
