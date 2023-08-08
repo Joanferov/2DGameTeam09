@@ -11,25 +11,16 @@ public class Colisions : MonoBehaviour
     public LayerMask groundLayer;
 
     BoxCollider2D col2D;
+    Mario mario;
+    Movimiento mover; 
     private void Awake()
     {
         col2D = GetComponent<BoxCollider2D>();
-    }
-    
-    
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        mario = GetComponent<Mario>();
+        mover = GetComponent<Movimiento>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-             
-    
-   }
+
     public bool Grounded()
     {
 
@@ -41,14 +32,14 @@ public class Colisions : MonoBehaviour
         Debug.DrawRay(footLeft, Vector2.down * col2D.bounds.extents.y * 1.5f, Color.magenta);
         Debug.DrawRay(footRight, Vector2.down * col2D.bounds.extents.y * 1.5f, Color.magenta);
 
-        if(Physics2D.Raycast(footLeft, Vector2.down, col2D.bounds.extents.y * 1.5f, groundLayer))
+        if (Physics2D.Raycast(footLeft, Vector2.down, col2D.bounds.extents.y * 1.5f, groundLayer))
 
         {
             isGrounded = true;
 
         }
 
-        else if(Physics2D.Raycast(footLeft, Vector2.down, col2D.bounds.extents.y * 1.5f, groundLayer))
+        else if (Physics2D.Raycast(footLeft, Vector2.down, col2D.bounds.extents.y * 1.5f, groundLayer))
         {
             isGrounded = true;
         }
@@ -72,6 +63,29 @@ public class Colisions : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
 
+            mario.Hit();
+
+        }
+
+
+    }
+    public void Dead()
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerDead");
+    }
+    private void OnTriggerEnter2D(Collider2D collisions)
+    {
+        PlayerHit playerHit = collisions.GetComponent<PlayerHit>();
+        if(playerHit != null)
+        {
+            playerHit.Hit();
+            mover.BounceUp();
+        }
+    }
 } 
     

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Movimiento : MonoBehaviour
 {
-    enum Direction { Left= -1,None= 0,Right = 1};
+    enum Direction { Left = -1, None = 0, Right = 1 };
     Direction currentDirection = Direction.None;
 
 
@@ -24,6 +24,8 @@ public class Movimiento : MonoBehaviour
     public bool isSkidding;
     public Rigidbody2D rb2D;
     Colisions colisions;
+
+    public bool inputMoveEnabled = true;
     private void Awake()
 
     {
@@ -42,29 +44,29 @@ public class Movimiento : MonoBehaviour
     void Update()
     {
 
-        if(isJumping)
+        if (isJumping)
         {
-           /* if(rb2D.velocity.y < 0f)
-            {
-                rb2D.gravityScale = defaultGravity;
-                if(colisions.Grounded())
-                {
-                    isJumping = false;
-                    jumpTimer = 0;
-                }
+            /* if(rb2D.velocity.y < 0f)
+             {
+                 rb2D.gravityScale = defaultGravity;
+                 if(colisions.Grounded())
+                 {
+                     isJumping = false;
+                     jumpTimer = 0;
+                 }
 
-            }*/  
-            if(rb2D.velocity.y > 0f)
+             }*/
+            if (rb2D.velocity.y > 0f)
             {
 
-                if(Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space))
                 {
                     jumpTimer += Time.deltaTime;
 
                 }
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    if(jumpTimer < maxJumpingTime)
+                    if (jumpTimer < maxJumpingTime)
                     {
                         rb2D.gravityScale = defaultGravity * 3f;
                     }
@@ -88,42 +90,41 @@ public class Movimiento : MonoBehaviour
         }
 
         currentDirection = Direction.None;
-        //transform.Translate(speed, 0, 0);
-        /*
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-        {
-            transform.Translate(0, speed, 0);
-        }
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+
+        if (inputMoveEnabled)
         {
 
-            transform.Translate(0, -speed, 0);
-        */
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-
-        }
-
-        
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            //transform.Translate(-speed, 0, 0);
-            currentDirection = Direction.Left;
-        }
-
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-
-            // transform.Translate(speed, 0, 0);
-
-            currentDirection = Direction.Right;
-
-
-        }
-            
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Jump();
 
             }
+
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                //transform.Translate(-speed, 0, 0);
+                currentDirection = Direction.Left;
+            }
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+
+                // transform.Translate(speed, 0, 0);
+
+                currentDirection = Direction.Right;
+
+
+            }
+
+
+
+        }
+
+
+
+
+    }
 
     private void FixedUpdate()
     {
@@ -190,19 +191,19 @@ public class Movimiento : MonoBehaviour
         rb2D.velocity = velocity;
 
     }
-            void Jump()
-{
-    if(colisions.Grounded() && !isJumping)
+    void Jump()
+    {
+        if (colisions.Grounded() && !isJumping)
         {
-            isJumping = true; 
+            isJumping = true;
             Vector2 fuerza = new Vector2(0, jumpForce);
             rb2D.AddForce(fuerza, ForceMode2D.Impulse);
 
         }
-    
-}
 
-            void MoveRight()
+    }
+
+    void MoveRight()
     {
 
         Vector2 velocity = new Vector2(1f, 0f);
@@ -212,9 +213,26 @@ public class Movimiento : MonoBehaviour
     }
 
 
+    public void Dead()
+    {
+        inputMoveEnabled = false;
+        rb2D.velocity = Vector2.zero;
+        rb2D.gravityScale = 1;
+        rb2D.AddForce(Vector2.up * 5f, ForceMode2D.Impulse);
+    }
+
+    public void BounceUp()
+    {
+        rb2D.velocity = Vector2.zero;
+        //Vector2 forceUp = new Vector2(0, 10f);
+        rb2D.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+
+    }
 
 
-        }
+
+
+}
 
 
 

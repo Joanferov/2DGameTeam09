@@ -29,4 +29,8 @@ public class Animations : MonoBehaviour
         animator.SetBool("Jump", movimiento.isJumping);
         animator.SetBool("Skid", movimiento.isSkidding);
     }
+    public void Dead()
+    {
+        animator.SetTrigger("Dead");
+    }
 }
