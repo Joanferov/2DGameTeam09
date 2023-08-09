@@ -80,10 +80,17 @@ public class Colisions : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collisions)
     {
-        PlayerHit playerHit = collisions.GetComponent<PlayerHit>();
+        /*PlayerHit playerHit = collisions.GetComponent<PlayerHit>();
         if(playerHit != null)
         {
             playerHit.Hit();
+            mover.BounceUp();
+        }*/
+
+        Enemy enemy = collisions.GetComponent<Enemy>();
+        if(enemy != null)
+        {
+            enemy.Stomped();
             mover.BounceUp();
         }
     }
